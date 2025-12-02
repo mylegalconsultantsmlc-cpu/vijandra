@@ -1,0 +1,139 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}About Us - My Legal Consultants{% endblock %}
+{% block meta %}
+<link rel="canonical" href="https://www.mylegalconsultants.com/about-us/">
+
+<meta name="description" content="Learn about My Legal Consultants, led by Adv. Vijandra Kumar Verma with 25+ years of legal expertise. We provide expert consultation for criminal, civil, corporate, family and property matters across India.">
+<meta name="keywords" content="about legal consultants, online legal help India, advocate services, legal advisor India, My Legal Consultants">
+
+<meta property="og:title" content="About Us – My Legal Consultants">
+<meta property="og:description" content="India’s trusted legal consultation platform led by Adv. Vijandra Kumar Verma, providing expert guidance across all major legal domains.">
+<meta property="og:url" content="https://www.mylegalconsultants.com/about-us/">
+<meta property="og:image" content="https://www.mylegalconsultants.com/static/images/og-image.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  "name": "My Legal Consultants",
+  "url": "https://www.mylegalconsultants.com/about-us/",
+  "logo": "https://www.mylegalconsultants.com/static/images/logo.png",
+  "description": "A trusted legal advisory service led by Adv. Vijandra Kumar Verma with 25+ years of courtroom experience.",
+  "founder": {
+    "@type": "Person",
+    "name": "Adv. Vijandra Kumar Verma",
+    "jobTitle": "Senior Advocate",
+    "description": "Former Additional Public Prosecutor with 25+ years of experience in litigation and legal strategy."
+  },
+  "areaServed": "IN",
+  "sameAs": [
+    "https://www.facebook.com/",
+    "https://www.instagram.com/",
+    "https://www.linkedin.com/"
+  ]
+}
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4 fw-bold">About Us</h1>
+
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <p>
+                <strong>My Legal Consultants</strong> is a trusted and professional legal advisory platform offering 
+                expert guidance across diverse areas of law. Founded under the leadership of 
+                <strong>Adv. Vijandra Kumar Verma</strong>, a Senior Advocate with <strong>25+ years of experience</strong> 
+                including service as an <strong>Additional Public Prosecutor</strong>, our mission is to make legal help 
+                simple, accessible, and affordable for everyone.
+            </p>
+
+            <p>
+                We believe that every individual deserves the right legal support at the right time. 
+                Whether you are dealing with a dispute, planning legal documentation, or seeking professional guidance, 
+                our team ensures clarity, confidence, and actionable solutions.
+            </p>
+        </div>
+    </div>
+
+    <h3 class="fw-bold mt-4">Who We Are</h3>
+    <p>
+        At My Legal Consultants, we focus on delivering <strong>transparent, strategic, and result-oriented</strong> 
+        legal consultation services. Our team consists of:
+    </p>
+
+    <ul>
+        <li>Senior Advocates</li>
+        <li>Experienced Litigators</li>
+        <li>Corporate Legal Advisors</li>
+        <li>Subject-Matter Experts</li>
+    </ul>
+
+    <p>
+        We combine strong legal experience with the convenience of modern technology to ensure 
+        clients get the right guidance—<strong>anytime, anywhere across India</strong>.
+    </p>
+
+    <h3 class="fw-bold mt-4">Our Areas of Expertise</h3>
+    <ul>
+        <li>Criminal Law</li>
+        <li>Divorce & Family Matters</li>
+        <li>Property & Real Estate Disputes</li>
+        <li>Cheque Bounce / NI Act Matters</li>
+        <li>Child Custody</li>
+        <li>Corporate & Business Law</li>
+        <li>Civil Disputes</li>
+        <li>Trademark & Copyright Matters</li>
+        <li>POCSO & Juvenile Matters</li>
+        <li>Legal Drafting & Documentation</li>
+    </ul>
+
+    <h3 class="fw-bold mt-4">Our Vision</h3>
+    <p>
+        To build India’s most reliable online legal consultation platform where every person receives 
+        <strong>professional guidance without confusion, delay, or high cost</strong>.
+    </p>
+
+    <h3 class="fw-bold mt-4">Why Clients Trust Us</h3>
+    <ul>
+        <li>25+ years of practical courtroom experience</li>
+        <li>Honest and transparent guidance</li>
+        <li>Quick and easy online booking</li>
+        <li>Personalized attention on every case</li>
+        <li>Ethical and professional advocacy</li>
+        <li>Trusted by thousands of clients and law students</li>
+    </ul>
+
+    <h3 class="fw-bold mt-4">Our Commitment</h3>
+    <p>
+        We respect the sensitivity of legal matters. Our commitment is to provide:
+    </p>
+    <ul>
+        <li>Correct legal remedies</li>
+        <li>Professional support at every step</li>
+        <li>Confidential and secure interactions</li>
+        <li>Clear communication and trustworthy advice</li>
+    </ul>
+
+    <h3 class="fw-bold mt-4">Get in Touch</h3>
+    <p>
+        If you are facing a legal issue or simply need clarity—<strong>we are here to help</strong>.  
+        Book your consultation now and speak to an expert.
+    </p>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'contact_us' %}" class="btn btn-primary px-4 py-2">
+            Contact Us
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

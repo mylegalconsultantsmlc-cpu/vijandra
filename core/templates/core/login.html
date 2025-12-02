@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Login - My Legal Consultants{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <h2>Login</h2>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="username">Email or Mobile Number</label>
+                <input type="text" name="identifier" id="identifier" placeholder="Enter your email or mobile" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter your password" required>
+            </div>
+
+            <div class="mb-3 text-end">
+                <a href="{% url 'password_reset' %}" class="forgot-password">Forgot Password?</a>
+
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p>Don't have an account? 
+            <a href="{% url 'register_client' %}">Register as Client</a> | 
+            <a href="{% url 'register_advocate' %}">Register as Advocate</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

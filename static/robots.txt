@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Block admin pages
+Disallow: /admin/
+
+# Block auth & session pages
+Disallow: /password-reset/
+Disallow: /login/
+Disallow: /logout/
+Disallow: /register/
+Disallow: /register/client/
+Disallow: /register/advocate/
+
+# Block dashboards & private user areas
+Disallow: /dashboard/
+Disallow: /client-dashboard/
+Disallow: /advocate-dashboard/
+Disallow: /profile/
+Disallow: /edit-profile/
+Disallow: /bookings/
+Disallow: /queries/
+Disallow: /settings/
+
+
+Sitemap: https://www.mylegalconsultants.com/sitemap.xml

@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Edit Advocate Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-3 mb-5">
+
+    <h3 class="text-center mb-4">Edit Advocate Profile</h3>
+
+    <div class="card shadow-sm p-4 mx-auto" style="max-width: 650px;">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="text-center mb-3">
+                {% if user.profile_pic %}
+                    <img src="{{ user.profile_pic.url }}" class="rounded-circle" width="120" height="120" style="object-fit: cover;">
+                {% else %}
+                    <img src="{% static 'images/default-user.png' %}" class="rounded-circle" width="120" height="120">
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Change Profile Picture</label>
+                <input type="file" class="form-control" name="profile_pic">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Mobile Number</label>
+                <input type="text" class="form-control" name="mobile_number" value="{{ user.mobile_number }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Experience (Years)</label>
+                <input type="number" class="form-control" name="experience" value="{{ user.experience }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Expertise</label>
+                <input type="text" class="form-control" name="expertise" value="{{ user.expertise }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Bar Council Enrollment Number</label>
+                <input type="text" class="form-control" name="enrollment_number" value="{{ user.enrollment_number }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+{% block title %}Urgent Consultation{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h3 class="mb-3 fw-bold text-danger text-center">🚨 Urgent Consultation</h3>
+    <p class="text-muted text-center mb-4">Submit your issue — we will assign an advocate ASAP</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="case_details" class="form-control mb-3" rows="5"
+                  placeholder="Describe your issue briefly..." required></textarea>
+
+        <button class="btn btn-danger w-100 py-2 rounded-pill">Confirm Urgent Booking</button>
+    </form>
+</div>
+{% endblock %}

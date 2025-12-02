@@ -1,0 +1,91 @@
+{% extends 'core/base.html' %}
+{% block title %}Contact Us - My Legal Consultants{% endblock %}
+{% block meta %}
+<link rel="canonical" href="https://www.mylegalconsultants.com/contact-us/">
+
+<meta name="description" content="Contact My Legal Consultants for expert legal consultation, online case guidance and support from verified advocates across India.">
+<meta name="keywords" content="contact legal consultants, legal help India, lawyer helpline, advocate contact, My Legal Consultants">
+
+<meta property="og:title" content="Contact Us – My Legal Consultants">
+<meta property="og:description" content="Reach out for legal consultation, expert advice, and advocate support.">
+<meta property="og:url" content="https://www.mylegalconsultants.com/contact-us/">
+<meta property="og:image" content="https://www.mylegalconsultants.com/static/images/og-image.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact My Legal Consultants",
+  "url": "https://www.mylegalconsultants.com/contact-us/",
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "telephone": "+91-8826669309",
+    "contactType": "customer support",
+    "availableLanguage": "en"
+  }]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Contact Form -->
+        <div class="col-md-6">
+            <h3 class="text-center text-dark mb-4">Contact Us</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="text-dark">Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="text-dark">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="text-dark">Mobile</label>
+                    <input type="text" name="mobile" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="text-dark">Message</label>
+                    <textarea name="message" class="form-control" rows="4" required></textarea>
+                </div>
+<div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" name="terms" id="terms" value="accepted" required>
+    <label class="form-check-label text-dark" for="terms">
+        Accept Terms & Privacy Policy
+    </label>
+</div>
+
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </form>
+        </div>
+
+        <!-- FAQs -->
+        <div class="col-md-6">
+            <h3 class="text-center text-dark mb-4">FAQs</h3>
+            <div class="accordion" id="faqAccordion">
+                {% for faq in faqs %}
+                <div class="accordion-item bg-white shadow-sm border-0 rounded mb-2">
+                    <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                            {{ faq.question }}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-dark">
+                            {{ faq.answer }}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-dark">No FAQs yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

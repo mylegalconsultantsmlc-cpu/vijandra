@@ -1,0 +1,271 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Client Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="service-page">
+  <div class="container-fluid my-4">
+    <div class="row g-3">
+
+      <div class="col-12 col-md-4 d-none d-md-block">
+
+        <div class="card profile-card">
+          <div class="card-body text-center">
+
+            {% if user.profile_pic %}
+                <img src="{{ user.profile_pic.url }}" class="rounded-circle mb-2"
+                     style="width:120px;height:120px;object-fit:cover;">
+            {% else %}
+                <img src="{% static 'images/default-user.png' %}" class="rounded-circle mb-2"
+                     style="width:120px;height:120px;object-fit:cover;">
+            {% endif %}
+
+            <h5 class="card-title">{{ user.first_name|default:user.username }}</h5>
+            <p class="card-text small text-muted">
+              {{ user.email }}
+              {% if user.mobile_number %} • {{ user.mobile_number }}{% endif %}
+            </p>
+
+            <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary mb-2">Edit Profile</a>
+
+            <hr>
+
+            <h6>Support</h6>
+            <p class="small mb-0">Phone: {{ support.phone|default:support_contact }}</p>
+            <p class="small">Email: {{ support.email|default:support_email }}</p>
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <div class="card-body">
+            <h6 class="text-center">Profile Details</h6>
+            <p class="small mb-0"><strong>Address:</strong> {{ user.address|default:"N/A" }}</p>
+            <p class="small mb-0"><strong>State:</strong> {{ user.state|default:"N/A" }}</p>
+            <p class="small"><strong>City:</strong> {{ user.city|default:"N/A" }}</p>
+          </div>
+        </div>
+
+        <div class="card mt-3 query-box">
+          <div class="card-header bg-dark text-white">
+            <h6 class="mb-0">Your Queries</h6>
+          </div>
+          <div class="card-body">
+            {% if client_queries %}
+                {% for q in client_queries %}
+                <div class="mb-3 p-2 border rounded">
+                    <p><strong>Question:</strong> {{ q.question }}</p>
+                    <p><strong>Answer:</strong> {{ q.answer|default:"Not answered yet" }}</p>
+                    <small class="text-muted">{{ q.created_at|date:"d M Y, h:i" }}</small>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No queries submitted.</p>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="col-12 col-md-8 d-none d-md-block">
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="mb-3">Ask Our Experts</h5>
+
+                <form action="{% url 'ask_query' %}" method="POST">
+                    {% csrf_token %}
+                    <textarea name="question" class="form-control mb-3" rows="3"
+                              placeholder="Type your legal question here..." required></textarea>
+                    <button class="btn btn-dark w-100">Submit Question</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card booking-card">
+          <div class="card-body">
+            <h5>Your Bookings</h5>
+
+            <div class="table-responsive">
+              <table class="table table-sm table-striped mb-0">
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Advocate</th>
+                    <th>Status</th>
+                    <th>Booking Time</th>
+                    <th>Replacement</th>
+                    <th>Case Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% for item in assigned_bookings_meta %}
+                  <tr>
+                    <td>
+                      {% if item.urgent %}
+                        <span class="badge bg-danger mb-1 d-block text-center">URGENT</span>
+                      {% endif %}
+                      {{ item.service_title }}
+                    </td>
+
+                    <td>
+                      {% if item.advocate_name %}
+                        {{ item.advocate_name }}
+                      {% else %}
+                        <span class="text-muted">Not Assigned</span>
+                      {% endif %}
+                    </td>
+
+                    <td>{{ item.status }}</td>
+
+                    <td>{{ item.booking_time|date:"d M Y, h:i A" }}</td>
+
+                    <td>
+                      {% if item.replacement_count == 3 %}
+                        <span class="badge bg-success">{{ item.replacement_count }} / 3</span>
+                      {% elif item.replacement_count in "12" %}
+                        <span class="badge bg-warning">{{ item.replacement_count }} / 3</span>
+                      {% else %}
+                        <span class="badge bg-danger">{{ item.replacement_count }} / 3</span>
+                      {% endif %}
+                    </td>
+
+                    <td>
+                      <button class="btn btn-sm btn-outline-secondary" type="button"
+                              data-bs-toggle="collapse" data-bs-target="#case{{ forloop.counter }}">
+                        View
+                      </button>
+                      <div class="collapse mt-2" id="case{{ forloop.counter }}">
+                        {% if item.case_details %}
+                          <div class="small">{{ item.case_details }}</div>
+                        {% else %}
+                          <div class="small text-muted">No case details provided.</div>
+                        {% endif %}
+                      </div>
+                    </td>
+                  </tr>
+                  {% empty %}
+                    <tr><td colspan="6" class="text-center text-muted">No bookings yet.</td></tr>
+                  {% endfor %}
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="col-12 d-md-none">
+
+<div class="card mb-3 p-3 text-center">
+
+  {% if user.profile_pic %}
+      <img src="{{ user.profile_pic.url }}"
+           class="rounded-circle mb-2 mx-auto d-block"
+           style="width:110px;height:110px;object-fit:cover;">
+  {% else %}
+      <img src="{% static 'images/default-user.png' %}"
+           class="rounded-circle mb-2 mx-auto d-block"
+           style="width:110px;height:110px;object-fit:cover;">
+  {% endif %}
+
+  <h5>{{ user.first_name|default:user.username }}</h5>
+  <p class="small text-muted">
+      {{ user.email }}
+      {% if user.mobile_number %} • {{ user.mobile_number }}{% endif %}
+  </p>
+
+  <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary w-100 mb-2">Edit Profile</a>
+</div>
+
+        <div class="card mb-3 text-center p-3">
+            <h6>Support</h6>
+            <p class="small mb-1">Phone: {{ support.phone|default:support_contact }}</p>
+            <p class="small">Email: {{ support.email|default:support_email }}</p>
+        </div>
+
+        <div class="card mb-3 p-3">
+          <h6 class="text-center mb-2">Profile Details</h6>
+          <p class="small mb-1"><strong>Address:</strong> {{ user.address|default:"N/A" }}</p>
+          <p class="small mb-1"><strong>State:</strong> {{ user.state|default:"N/A" }}</p>
+          <p class="small"><strong>City:</strong> {{ user.city|default:"N/A" }}</p>
+        </div>
+
+        <div class="card mb-3 p-3">
+            <h5 class="mb-2 text-center">Ask Our Experts</h5>
+            <form action="{% url 'ask_query' %}" method="POST">
+                {% csrf_token %}
+                <textarea name="question" class="form-control mb-2" rows="3"
+                          placeholder="Type your legal question here..." required></textarea>
+                <button class="btn btn-dark w-100">Submit Question</button>
+            </form>
+        </div>
+
+        <div class="card mb-3 p-3">
+          <h5 class="mb-2 text-center">Your Queries</h5>
+
+          {% if client_queries %}
+            {% for q in client_queries %}
+              <div class="border rounded p-2 mb-2">
+                <p><strong>Q:</strong> {{ q.question }}</p>
+                <p><strong>A:</strong> {{ q.answer|default:"Not answered yet" }}</p>
+                <small class="text-muted">{{ q.created_at|date:"d M Y, h:i" }}</small>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-muted text-center">No queries submitted.</p>
+          {% endif %}
+        </div>
+
+        <h5 class="fw-bold mt-3">Your Bookings</h5>
+
+        {% for item in assigned_bookings_meta %}
+        <div class="card mb-3 shadow-sm border rounded p-3">
+
+          {% if item.urgent %}
+            <span class="badge bg-danger mb-2">URGENT BOOKING</span>
+          {% endif %}
+
+          <p><strong>Service:</strong> {{ item.service_title }}</p>
+          <p><strong>Advocate:</strong> {{ item.advocate_name|default:"Not Assigned" }}</p>
+          <p><strong>Status:</strong> {{ item.status }}</p>
+          <p><strong>Booking Time:</strong> {{ item.booking_time|date:"d M Y, h:i A" }}</p>
+
+          <p><strong>Replacement:</strong>
+            {% if item.replacement_count == 3 %}
+              <span class="badge bg-success">{{ item.replacement_count }} / 3</span>
+            {% elif item.replacement_count in "12" %}
+              <span class="badge bg-warning text-dark">{{ item.replacement_count }} / 3</span>
+            {% else %}
+              <span class="badge bg-danger">{{ item.replacement_count }} / 3</span>
+            {% endif %}
+          </p>
+
+          <p><strong>Case Details:</strong></p>
+          <button class="btn btn-dark btn-sm w-100" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#caseMobile{{ forloop.counter }}">
+            View Details
+          </button>
+          <div class="collapse mt-2" id="caseMobile{{ forloop.counter }}">
+            {% if item.case_details %}
+              <div class="small">{{ item.case_details }}</div>
+            {% else %}
+              <div class="small text-muted">No case details provided.</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ blog.meta_title|default:blog.title }}{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{{ blog.meta_description }}">
+    <meta name="keywords" content="{{ blog.meta_keywords }}">
+
+    {% if blog.canonical_url %}
+    <link rel="canonical" href="{{ blog.canonical_url }}">
+    {% endif %}
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="{{ blog.og_title|default:blog.title }}">
+    <meta property="og:description" content="{{ blog.og_description|default:blog.meta_description }}">
+    <meta property="og:image" content="{% if blog.og_image %}{{ blog.og_image.url }}{% elif blog.image %}{{ blog.image.url }}{% endif %}">
+    <meta property="og:type" content="article">
+{% endblock %}
+
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-dark mb-4">{{ blog.title }}</h2>
+
+    {% if blog.image %}
+        <img src="{{ blog.image.url }}" class="img-fluid mb-3" style="border-radius: 10px;">
+    {% endif %}
+
+    <p class="text-dark" style="font-size: 1.1rem; line-height: 1.8;">
+        {{ blog.content|linebreaks }}
+    </p>
+</div>
+{% endblock %}
