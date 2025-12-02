@@ -11,7 +11,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ------------------------
 SECRET_KEY = 'django-insecure-your-secret-key-here'
 DEBUG = True  # Set False in production
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'mylegalconsultants.onrender.com',
+    'www.mylegalconsultants.onrender.com',
+    'localhost',
+    '127.0.0.1'
+]
+
 
 # ------------------------
 # Installed Apps
