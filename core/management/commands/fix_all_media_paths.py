@@ -1,58 +1,92 @@
 from django.core.management.base import BaseCommand
-from django.conf import settings
-from core.models import User, Service, Blog, HomeGallery
+from core.models import Service, HomeGallery, Blog, User
+from cloudinary.uploader import upload
 import os
 
+BASE_PATH = "C:/Users/LENOVO/MLC1/media/"
+
+FOLDERS = {
+    "services": BASE_PATH + "services/",
+    "profile_pics": BASE_PATH + "profile_pics/",
+    "bar_ids": BASE_PATH + "bar_council_ids/",
+    "gallery": BASE_PATH + "home_gallery/",
+    "blogs": BASE_PATH + "blogs/",
+}
+
+
+def upload_if_exists(local_path, cloud_folder):
+    if not os.path.exists(local_path):
+        print("❌ Not found:", local_path)
+        return None
+
+    print("⬆ Uploading:", local_path)
+    result = upload(local_path, folder=cloud_folder)
+    return result.get("secure_url")
+
+
 class Command(BaseCommand):
-    help = "Fix all media file paths so Django can find actual files"
+    help = "Fix all media paths and re-upload to Cloudinary"
 
     def handle(self, *args, **kwargs):
-        MEDIA_ROOT = settings.MEDIA_ROOT
+        print("=== START FIX ===")
 
-        self.stdout.write(self.style.WARNING("=== FIXING ALL MEDIA PATHS ==="))
-
-        # Create mapping of all real media files
-        all_files = {}
-
-        for root, dirs, files in os.walk(MEDIA_ROOT):
-            for f in files:
-                full_path = os.path.join(root, f)
-                rel_path = os.path.relpath(full_path, MEDIA_ROOT).replace("\\", "/")
-                all_files[f.lower()] = rel_path
-
-        # Helper to fix single file field
-        def fix_field(instance, field_name):
-            file_field = getattr(instance, field_name)
-            if not file_field:
-                return
-
-            old_name = file_field.name.split("/")[-1].lower()
-
-            if old_name in all_files:
-                correct = all_files[old_name]
-                file_field.name = correct
-                instance.save()
-                self.stdout.write(self.style.SUCCESS(f"FIXED: {instance} → {correct}"))
-            else:
-                self.stdout.write(self.style.ERROR(f"NOT FOUND → {old_name} (DB)"))
-
-        # Fix Users
-        for u in User.objects.all():
-            fix_field(u, "profile_pic")
-            fix_field(u, "bar_council_id")
-            fix_field(u, "document")
-
-        # Fix Services
+        # SERVICES
         for s in Service.objects.all():
-            fix_field(s, "image")
+            if not s.image:
+                continue
+            filename = os.path.basename(s.image.name)
+            p = os.path.join(FOLDERS['services'], filename)
 
-        # Fix Blogs
-        for b in Blog.objects.all():
-            fix_field(b, "image")
-            fix_field(b, "og_image")
+            new_url = upload_if_exists(p, "mlc/services")
+            if new_url:
+                s.image = new_url
+                s.save()
 
-        # Fix Gallery
+        # USERS
+        for u in User.objects.all():
+
+            if u.profile_pic:
+                f = os.path.basename(u.profile_pic.name)
+                p = os.path.join(FOLDERS['profile_pics'], f)
+                new = upload_if_exists(p, "mlc/profile_pics")
+                if new:
+                    u.profile_pic = new
+                    u.save()
+
+            if u.bar_council_id:
+                f = os.path.basename(u.bar_council_id.name)
+                p = os.path.join(FOLDERS['bar_ids'], f)
+                new = upload_if_exists(p, "mlc/bar_ids")
+                if new:
+                    u.bar_council_id = new
+                    u.save()
+
+        # GALLERY
         for g in HomeGallery.objects.all():
-            fix_field(g, "image")
+            if g.image:
+                f = os.path.basename(g.image.name)
+                p = os.path.join(FOLDERS['gallery'], f)
+                new = upload_if_exists(p, "mlc/gallery")
+                if new:
+                    g.image = new
+                    g.save()
 
-        self.stdout.write(self.style.SUCCESS("=== ALL PATHS FIXED SUCCESSFULLY ==="))
+        # BLOGS
+        for b in Blog.objects.all():
+            if b.image:
+                f = os.path.basename(b.image.name)
+                p = os.path.join(FOLDERS['blogs'], f)
+                new = upload_if_exists(p, "mlc/blogs")
+                if new:
+                    b.image = new
+                    b.save()
+
+            if b.og_image:
+                f = os.path.basename(b.og_image.name)
+                p = os.path.join(FOLDERS['blogs'], f)
+                new = upload_if_exists(p, "mlc/blogs/og")
+                if new:
+                    b.og_image = new
+                    b.save()
+
+        print("=== FIX COMPLETE ===")
