@@ -1,6 +1,12 @@
 import os
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
+# ------------------------
+# Base Directory
+# ------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ------------------------
@@ -11,11 +17,11 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'mylegalconsultants.com',
-    'www.mylelegalconsultants.com',
+    'www.mylegalconsultants.com',
     'mylegalconsultants.onrender.com',
     'www.mylegalconsultants.onrender.com',
     'localhost',
-    '127.0.0.1',
+    '127.0.0.1'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -35,11 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'core',
+
     # Cloudinary
     'cloudinary',
     'cloudinary_storage',
-
-    'core',
 ]
 
 # ------------------------
@@ -47,7 +53,9 @@ INSTALLED_APPS = [
 # ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # MUST stay here
+
+    # whitenoise
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,10 +66,9 @@ MIDDLEWARE = [
 ]
 
 # ------------------------
-# URL & WSGI
+# Root URL
 # ------------------------
 ROOT_URLCONF = 'MLC1.urls'
-WSGI_APPLICATION = 'MLC1.wsgi.application'
 
 # ------------------------
 # Templates
@@ -83,6 +90,11 @@ TEMPLATES = [
         },
     },
 ]
+
+# ------------------------
+# WSGI
+# ------------------------
+WSGI_APPLICATION = 'MLC1.wsgi.application'
 
 # ------------------------
 # Database
@@ -113,14 +125,15 @@ USE_I18N = True
 USE_TZ = True
 
 # ------------------------
-# Static Files
+# Static files
 # ------------------------
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ------------------------
-# CLOUDINARY CONFIG
+# CLOUDINARY — MEDIA STORAGE
 # ------------------------
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dc0ucrbt8',
@@ -130,25 +143,26 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# MEDIA URL still required but Cloudinary handles storage
 MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'  # not used but kept safe
 
 # ------------------------
-# Custom User Model
+# Custom User
 # ------------------------
 AUTH_USER_MODEL = 'core.User'
 
 # ------------------------
-# Authentication Redirects
+# Login / Logout Redirects
 # ------------------------
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # ------------------------
-# Messages Framework
+# Messages
 # ------------------------
 from django.contrib.messages import constants as messages
+
 MESSAGE_TAGS = {
     messages.DEBUG: 'debug',
     messages.INFO: 'info',
@@ -158,7 +172,7 @@ MESSAGE_TAGS = {
 }
 
 # ------------------------
-# Email (Gmail SMTP)
+# Email Backend
 # ------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -167,16 +181,3 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'mylegalconsultants.mlc@gmail.com'
 EMAIL_HOST_PASSWORD = 'jmns sbci fiwb gcuu'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-# ------------------------
-# Security (Production)
-# ------------------------
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-
-# ------------------------
-# Default PK Field
-# ------------------------
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
