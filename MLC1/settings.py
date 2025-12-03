@@ -9,15 +9,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ------------------------
 # Security
 # ------------------------
-SECRET_KEY = 'django-insecure-your-secret-key-here'
-DEBUG = True  # Set False in production
+SECRET_KEY = 'your-real-generated-secret-key'
+DEBUG = False  
+
 ALLOWED_HOSTS = [
+    'mylegalconsultants.com',
+    'www.mylegalconsultants.com',
     'mylegalconsultants.onrender.com',
     'www.mylegalconsultants.onrender.com',
     'localhost',
     '127.0.0.1'
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://mylegalconsultants.com',
+    'https://www.mylegalconsultants.com',
+    'https://mylegalconsultants.onrender.com',
+]
 
 # ------------------------
 # Installed Apps
