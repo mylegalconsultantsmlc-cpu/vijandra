@@ -1,8 +1,5 @@
 import os
 from pathlib import Path
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 # ------------------------
 # Base Directory
@@ -12,8 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ------------------------
 # Security
 # ------------------------
-SECRET_KEY = 'your-real-generated-secret-key'
-DEBUG = False
+SECRET_KEY = os.getenv("SECRET_KEY", "change-this")
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     'mylegalconsultants.com',
@@ -43,7 +40,6 @@ INSTALLED_APPS = [
 
     'core',
 
-    # Cloudinary
     'cloudinary',
     'cloudinary_storage',
 ]
@@ -53,10 +49,7 @@ INSTALLED_APPS = [
 # ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
-    # whitenoise
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,7 +85,7 @@ TEMPLATES = [
 ]
 
 # ------------------------
-# WSGI
+# WSGI Application
 # ------------------------
 WSGI_APPLICATION = 'MLC1.wsgi.application'
 
@@ -107,7 +100,7 @@ DATABASES = {
 }
 
 # ------------------------
-# Password validation
+# Password Validation
 # ------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -125,7 +118,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ------------------------
-# Static files
+# Static files (Render + Whitenoise)
 # ------------------------
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
@@ -133,7 +126,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ------------------------
-# CLOUDINARY — MEDIA STORAGE
+# Cloudinary Storage — MEDIA
 # ------------------------
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dc0ucrbt8',
@@ -143,16 +136,16 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # not used but kept safe
+# ❌ No MEDIA_URL / MEDIA_ROOT
+# Cloudinary handles all URLs automatically
 
 # ------------------------
-# Custom User
+# Custom User Model
 # ------------------------
 AUTH_USER_MODEL = 'core.User'
 
 # ------------------------
-# Login / Logout Redirects
+# Auth Redirects
 # ------------------------
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
