@@ -1,11 +1,24 @@
 import os
 from pathlib import Path
-import cloudinary
 
 # ------------------------
 # Base Directory
 # ------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# ------------------------
+# Cloudinary Config (MUST BE AT TOP)
+# ------------------------
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+    cloud_name="dc0ucrbt8",
+    api_key="979711746737173",
+    api_secret="qmVp20m1Xbp4EDQIh_R0IQtk_Do",
+    secure=True
+)
 
 # ------------------------
 # Security
@@ -59,9 +72,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ------------------------
-# Root URL
-# ------------------------
 ROOT_URLCONF = 'MLC1.urls'
 
 # ------------------------
@@ -85,9 +95,6 @@ TEMPLATES = [
     },
 ]
 
-# ------------------------
-# WSGI Application
-# ------------------------
 WSGI_APPLICATION = 'MLC1.wsgi.application'
 
 # ------------------------
@@ -126,14 +133,10 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ----------------------------------------------------
-# CLOUDINARY — FIXED & FULL WORKING CONFIG
-# ----------------------------------------------------
-cloudinary.config(
-    cloud_name = "dc0ucrbt8",
-    api_key = "979711746737173",
-    api_secret = "qmVp20m1Xbp4EDQIh_R0IQtk_Do"
-)
+# -------------------------------
+# CLOUDINARY — FINAL WORKING CODE
+# -------------------------------
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dc0ucrbt8',
@@ -141,10 +144,9 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': 'qmVp20m1Xbp4EDQIh_R0IQtk_Do',
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# IMPORTANT: Prevent Django from using /media/ locally on Render
-MEDIA_URL = "https://res.cloudinary.com/dc0ucrbt8/"
+MEDIA_URL = '/media/'   # <-- Fix here (do NOT put Cloudinary URL)
+MEDIA_ROOT = BASE_DIR / 'media'   # not used, but required
+/"
 
 # ------------------------
 # Custom User Model
