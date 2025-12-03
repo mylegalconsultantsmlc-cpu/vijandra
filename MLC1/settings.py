@@ -1,24 +1,21 @@
 import os
 from pathlib import Path
 
-# ------------------------
-# Base Directory
-# ------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ------------------------
 # Security
 # ------------------------
 SECRET_KEY = 'your-real-generated-secret-key'
-DEBUG = False  
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'mylegalconsultants.com',
-    'www.mylegalconsultants.com',
+    'www.mylelegalconsultants.com',
     'mylegalconsultants.onrender.com',
     'www.mylegalconsultants.onrender.com',
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -37,7 +34,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',  # Our main app
+
+    # Cloudinary
+    'cloudinary',
+    'cloudinary_storage',
+
+    'core',
 ]
 
 # ------------------------
@@ -45,6 +47,8 @@ INSTALLED_APPS = [
 # ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # MUST stay here
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,9 +58,10 @@ MIDDLEWARE = [
 ]
 
 # ------------------------
-# Root URL
+# URL & WSGI
 # ------------------------
 ROOT_URLCONF = 'MLC1.urls'
+WSGI_APPLICATION = 'MLC1.wsgi.application'
 
 # ------------------------
 # Templates
@@ -64,7 +69,7 @@ ROOT_URLCONF = 'MLC1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'core/templates'],  # Templates folder
+        'DIRS': [BASE_DIR / 'core/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,12 +85,7 @@ TEMPLATES = [
 ]
 
 # ------------------------
-# WSGI
-# ------------------------
-WSGI_APPLICATION = 'MLC1.wsgi.application'
-
-# ------------------------
-# Database (SQLite default)
+# Database
 # ------------------------
 DATABASES = {
     'default': {
@@ -98,19 +98,10 @@ DATABASES = {
 # Password validation
 # ------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {'min_length': 8},
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', 'OPTIONS': {'min_length': 8}},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # ------------------------
@@ -122,43 +113,40 @@ USE_I18N = True
 USE_TZ = True
 
 # ------------------------
-# Static files
+# Static Files
 # ------------------------
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+# ------------------------
+# CLOUDINARY CONFIG
+# ------------------------
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dc0ucrbt8',
+    'API_KEY': '979711746737173',
+    'API_SECRET': 'qmVp20m1Xbp4EDQIh_R0IQtk_Do',
+}
 
-# ------------------------
-# Media files (profile pics, services, blog images, docs)
-# ------------------------
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# MEDIA URL still required but Cloudinary handles storage
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 # ------------------------
-# Default primary key field type
-# ------------------------
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# ------------------------
-# Custom User
+# Custom User Model
 # ------------------------
 AUTH_USER_MODEL = 'core.User'
 
 # ------------------------
-# Login / Logout redirects
+# Authentication Redirects
 # ------------------------
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # ------------------------
-# Messages
+# Messages Framework
 # ------------------------
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
@@ -170,20 +158,25 @@ MESSAGE_TAGS = {
 }
 
 # ------------------------
-# Email Backend (Gmail SMTP)
+# Email (Gmail SMTP)
 # ------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mylegalconsultants.mlc@gmail.com'         # Replace with your Gmail
-EMAIL_HOST_PASSWORD = 'jmns sbci fiwb gcuu'      # Replace with Gmail App Password
+EMAIL_HOST_USER = 'mylegalconsultants.mlc@gmail.com'
+EMAIL_HOST_PASSWORD = 'jmns sbci fiwb gcuu'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # ------------------------
-# Security Settings (Optional for production)
+# Security (Production)
 # ------------------------
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+# ------------------------
+# Default PK Field
+# ------------------------
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
