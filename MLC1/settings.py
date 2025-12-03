@@ -117,27 +117,22 @@ TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
-# ------------------------
-# Static files (Render + Whitenoise)
-# ------------------------
+# …
+
+# Static files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ------------------------
-# Cloudinary Storage — MEDIA
-# ------------------------
+# Cloudinary media storage
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dc0ucrbt8',
     'API_KEY': '979711746737173',
     'API_SECRET': 'qmVp20m1Xbp4EDQIh_R0IQtk_Do',
 }
-
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# ❌ No MEDIA_URL / MEDIA_ROOT
-# Cloudinary handles all URLs automatically
 
 # ------------------------
 # Custom User Model
