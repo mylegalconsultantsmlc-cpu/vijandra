@@ -1,10 +1,8 @@
 User-agent: *
 Allow: /
 
-# Block admin pages
 Disallow: /admin/
 
-# Block auth & session pages
 Disallow: /password-reset/
 Disallow: /login/
 Disallow: /logout/
@@ -12,7 +10,6 @@ Disallow: /register/
 Disallow: /register/client/
 Disallow: /register/advocate/
 
-# Block dashboards & private user areas
 Disallow: /dashboard/
 Disallow: /client-dashboard/
 Disallow: /advocate-dashboard/

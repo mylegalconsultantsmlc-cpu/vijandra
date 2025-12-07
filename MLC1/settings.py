@@ -1,21 +1,18 @@
 import os
 from pathlib import Path
 
-# ------------------------
-# Base Directory
-# ------------------------
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ------------------------
-# Security
-# ------------------------
-SECRET_KEY = 'django-insecure-your-secret-key-here'
-DEBUG = True  # Set False in production
-ALLOWED_HOSTS = []
 
-# ------------------------
-# Installed Apps
-# ------------------------
+SECRET_KEY = 'django-insecure-your-secret-key-here'
+DEBUG = False
+ALLOWED_HOSTS = [
+    "mylegalconsultants.com",
+    "www.mylegalconsultants.com",
+    "43.204.153.51",
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,11 +23,9 @@ INSTALLED_APPS = [
     'core',  # Our main app
 ]
 
-# ------------------------
-# Middleware
-# ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # REQUIRED
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -39,9 +34,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ------------------------
-# Root URL
-# ------------------------
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 ROOT_URLCONF = 'MLC1.urls'
 
 TEMPLATES = [
@@ -63,15 +56,8 @@ TEMPLATES = [
     },
 ]
 
-
-# ------------------------
-# WSGI
-# ------------------------
 WSGI_APPLICATION = 'MLC1.wsgi.application'
 
-# ------------------------
-# Database (SQLite default)
-# ------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -79,9 +65,6 @@ DATABASES = {
     }
 }
 
-# ------------------------
-# Password validation
-# ------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -98,47 +81,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# ------------------------
-# Internationalization
-# ------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
-# ------------------------
-# Static files
-# ------------------------
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# ------------------------
-# Media files (profile pics, services, blog images, docs)
-# ------------------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# ------------------------
-# Default primary key field type
-# ------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ------------------------
-# Custom User
-# ------------------------
 AUTH_USER_MODEL = 'core.User'
 
-# ------------------------
-# Login / Logout redirects
-# ------------------------
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# ------------------------
-# Messages
-# ------------------------
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.DEBUG: 'debug',
@@ -148,23 +110,15 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-# -----------------------------------
-# EMAIL SETTINGS
-# -----------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "mylegalconsultants.mlc@gmail.com"
-EMAIL_HOST_PASSWORD = "jmns sbci fiwb gcuu"
+EMAIL_HOST_PASSWORD = "xyx"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# ------------------------
-# Security Settings (Optional for production)
-# ------------------------
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-
-
