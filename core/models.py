@@ -8,6 +8,7 @@ class User(AbstractUser):
         ('client', 'Client'),
         ('advocate', 'Advocate'),
     )
+
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, blank=True, default='client')
     mobile_number = models.CharField(max_length=15, blank=True, default='')
 
@@ -23,8 +24,12 @@ class User(AbstractUser):
     expertise = models.CharField(max_length=200, blank=True, default='')
     document = models.FileField(upload_to='advocate_docs/', blank=True, null=True)
 
+    # ✅ Manual verification field (NEW)
+    is_verified = models.BooleanField(default=False)
+
     def __str__(self):
         return self.get_username()
+
 
 
 class ClientProfile(models.Model):

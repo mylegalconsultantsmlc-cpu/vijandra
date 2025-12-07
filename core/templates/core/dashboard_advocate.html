@@ -12,15 +12,23 @@
     .booking-card { padding: 10px !important; }
     .mobile-section { padding: 12px !important; }
 }
+
+.verified-icon {
+    width: 18px;
+    height: 18px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
 </style>
 
 <div class="service-page">
   <div class="container-fluid my-4">
     <div class="row g-3">
 
+      <!-- LEFT (DESKTOP ONLY) -->
       <div class="col-md-4 d-none d-md-block">
 
-
+        <!-- Profile Card -->
         <div class="card profile-card">
           <div class="card-body text-center">
 
@@ -32,7 +40,15 @@
                    style="width:120px;height:120px;object-fit:cover;">
             {% endif %}
 
-            <h5>{{ user.first_name }}</h5>
+            <!-- ⭐ Name with Instagram-style Blue Tick -->
+            <h5 class="mt-2">
+                {{ user.first_name }}
+                {% if user.is_verified %}
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg"
+                         class="verified-icon" alt="verified">
+                {% endif %}
+            </h5>
+
             <p class="small text-muted">
               {{ user.email }}
               {% if user.mobile_number %} • {{ user.mobile_number }}{% endif %}
@@ -48,7 +64,7 @@
           </div>
         </div>
 
-
+        <!-- Profile Details -->
         <div class="card mt-3">
           <div class="card-body">
             <h6 class="text-center">Profile Details</h6>
@@ -62,7 +78,7 @@
 
       </div>
 
-
+      <!-- RIGHT (DESKTOP ONLY) -->
       <div class="col-12 col-md-8 d-none d-md-block">
         <div class="card mb-3 booking-card">
           <div class="card-body">
@@ -133,7 +149,7 @@
         </div>
       </div>
 
-
+      <!-- MOBILE VIEW -->
       <div class="d-md-none mt-3">
 
         <div class="card p-3 mb-3 text-center">
@@ -148,7 +164,15 @@
                    style="width:110px;height:110px;object-fit:cover;">
           {% endif %}
 
-          <h5>{{ user.first_name }}</h5>
+          <!-- ⭐ Mobile Name with Tick -->
+          <h5 class="mt-2">
+              {{ user.first_name }}
+              {% if user.is_verified %}
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg"
+                     class="verified-icon" alt="verified">
+              {% endif %}
+          </h5>
+
           <p class="small text-muted">
               {{ user.email }}
               {% if user.mobile_number %} • {{ user.mobile_number }}{% endif %}
@@ -163,7 +187,6 @@
           <p class="small">Email: <a href="mailto:{{ support_email }}">{{ support_email }}</a></p>
         </div>
 
-
         <div class="card mb-3 p-3">
           <h6 class="text-center">Profile Details</h6>
 
@@ -171,7 +194,6 @@
           <p class="small mb-1"><strong>Experience:</strong> {{ user.experience|default:"N/A" }} years</p>
           <p class="small mb-1"><strong>Expertise:</strong> {{ user.expertise|default:"N/A" }}</p>
         </div>
-
 
         <h5 class="fw-bold mb-3">Assigned Bookings</h5>
 

@@ -15,8 +15,8 @@ from .models import (
     LegalQuery,
 )
 
-
 class UserAdmin(BaseUserAdmin):
+
     list_display = (
         'username',
         'email',
@@ -27,11 +27,28 @@ class UserAdmin(BaseUserAdmin):
         'city',
         'enrollment_number',
         'experience',
+        'is_verified',
         'is_staff',
-        'is_active'
+        'is_active',
     )
-    list_filter = ('user_type', 'is_staff', 'is_active', 'state', 'city')
-    search_fields = ('username', 'email', 'mobile_number', 'first_name', 'enrollment_number')
+
+    list_filter = (
+        'user_type',
+        'is_verified',
+        'is_staff',
+        'is_active',
+        'state',
+        'city',
+    )
+
+    search_fields = (
+        'username',
+        'email',
+        'mobile_number',
+        'first_name',
+        'enrollment_number',
+    )
+
     ordering = ('username',)
 
     fieldsets = (
@@ -45,7 +62,7 @@ class UserAdmin(BaseUserAdmin):
                 'address',
                 'state',
                 'city',
-                'profile_pic'
+                'profile_pic',
             )
         }),
 
@@ -55,7 +72,8 @@ class UserAdmin(BaseUserAdmin):
                 'bar_council_id',
                 'experience',
                 'expertise',
-                'document'
+                'document',
+                'is_verified',   # <-- VERIFIED FLAG
             )
         }),
 
@@ -65,7 +83,7 @@ class UserAdmin(BaseUserAdmin):
                 'is_active',
                 'is_superuser',
                 'groups',
-                'user_permissions'
+                'user_permissions',
             )
         }),
 
@@ -87,14 +105,15 @@ class UserAdmin(BaseUserAdmin):
                 'first_name',
                 'state',
                 'city',
+                'is_verified',
                 'is_staff',
-                'is_active'
+                'is_active',
             )
         }),
     )
 
-admin.site.register(User, UserAdmin)
 
+admin.site.register(User, UserAdmin)
 
 @admin.register(ClientProfile)
 class ClientProfileAdmin(admin.ModelAdmin):

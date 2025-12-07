@@ -3,7 +3,6 @@
 {% load static %}
 
 {% block meta %}
-
     <meta name="title" content="My Legal Consultants – Online Legal Help, Free Consultation & Verified Advocates">
     <meta name="description" content="Book free legal consultations, get expert advice, ask legal questions online, and connect with verified advocates across India. My Legal Consultants – Trusted legal help on one platform.">
     <meta name="keywords" content="legal consultants, free legal consultation, online advocate, legal help India, lawyer consultation, legal advice online">
@@ -44,12 +43,11 @@
 {% endblock %}
 
 {% block title %}Home - My Legal Consultants{% endblock %}
-{% block content %}
 
+{% block content %}
 
 <div class="mlc-hero-wrapper d-none d-md-flex">
     <div class="mlc-hero-content">
-
         <div class="mlc-hero-item">
             <i class="fas fa-user-tie"></i>
             <p>Connect with Top Advocates Across India</p>
@@ -69,10 +67,8 @@
             <i class="fas fa-handshake"></i>
             <p>Book Legal Consultations Free Of Charge</p>
         </div>
-
     </div>
 </div>
-
 
 <div class="mobile-hero d-block d-md-none">
     <img src="{% static 'images/mobile_hero.jpg' %}" alt="Legal Assistance" class="img-fluid rounded shadow">
@@ -85,79 +81,89 @@
     </form>
 </div>
 
-
 <div class="container my-5">
     <div class="hero-text text-center mb-4 d-none d-md-block">
         <h2 class="text-dark">Welcome to My Legal Consultants</h2>
     </div>
 
+    <div class="text-center mb-4">
+        <a href="{% url 'book_urgent_consultation' %}" class="btn btn-danger btn-lg rounded-pill px-4 py-2">
+            🚨 Book Urgent Consultation
+        </a>
+    </div>
 
-<div class="text-center mb-4">
-    <a href="{% url 'book_urgent_consultation' %}" class="btn btn-danger btn-lg rounded-pill px-4 py-2">
-        🚨 Book Urgent Consultation
-    </a>
-</div>
+    <div class="row services-and-images">
+        <div class="col-12 col-md-6 left-services-column">
+            <div class="services-container">
+                {% for service in featured_services %}
+                    <div class="service-tile">
+                        <div class="card text-center h-100">
+                            <div class="card-body p-2">
+                                <img src="{% if service.image %}{{ service.image.url }}{% else %}{% static 'images/default-service.png' %}{% endif %}"
+                                     class="img-fluid mb-2 service-icon">
 
+                                <h6 class="service-title">{{ service.title }}</h6>
+                                <p class="service-desc">{{ service.description|truncatewords:8 }}</p>
 
-<div class="row services-and-images">
-
-    <div class="col-12 col-md-6 left-services-column">
-        <div class="services-container">
-            {% for service in featured_services %}
-                <div class="service-tile">
-                    <div class="card text-center h-100">
-                        <div class="card-body p-2">
-
-                            <img src="{% if service.image %}{{ service.image.url }}{% else %}{% static 'images/default-service.png' %}{% endif %}"
-                                 class="img-fluid mb-2 service-icon">
-
-                            <h6 class="service-title">{{ service.title }}</h6>
-
-                            <p class="service-desc">{{ service.description|truncatewords:8 }}</p>
-
-                            <a href="{% url 'book_consultation' service.id %}"
-                               class="btn custom-btn">Book Consultation</a>
-
+                                <a href="{% url 'book_consultation' service.id %}"
+                                   class="btn custom-btn">Book Consultation</a>
+                            </div>
                         </div>
                     </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 d-none d-md-block images-right-column">
+            <div class="row g-3 h-100">
+                <div class="col-6">
+                    <img src="{% static 'images/legal1.jpg' %}" class="custom-img">
                 </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="col-12 col-md-6 d-none d-md-block images-right-column">
-        <div class="row g-3 h-100">
-            <div class="col-6">
-                <img src="{% static 'images/legal1.jpg' %}" class="custom-img">
-            </div>
-            <div class="col-6">
-                <img src="{% static 'images/legal2.jpg' %}" class="custom-img">
-            </div>
-            <div class="col-6">
-                <img src="{% static 'images/legal3.jpg' %}" class="custom-img">
-            </div>
-            <div class="col-6">
-                <img src="{% static 'images/legal4.jpg' %}" class="custom-img">
+                <div class="col-6">
+                    <img src="{% static 'images/legal2.jpg' %}" class="custom-img">
+                </div>
+                <div class="col-6">
+                    <img src="{% static 'images/legal3.jpg' %}" class="custom-img">
+                </div>
+                <div class="col-6">
+                    <img src="{% static 'images/legal4.jpg' %}" class="custom-img">
+                </div>
             </div>
         </div>
     </div>
-
 </div>
 
-
+<!-- Gallery Section -->
 <div class="container-fluid my-5 px-0">
+    <h3 class="text-center mb-4 text-dark">Gallery</h3>
 
-    <h3 class="text-center mb-4 text-dark">Our Work Gallery</h3>
+    <!-- DESKTOP: 3 cards with arrows -->
+    <div class="gallery-desktop d-none d-md-block">
+        <div class="gallery-wrapper">
 
-    <!-- Desktop: Horizontal Scroll (5 images visible) -->
-    <div class="gallery-desktop d-none d-md-flex">
-        <div class="gallery-scroll">
-            {% for img in gallery_images %}
-                <img src="{{ img.image.url }}" class="gallery-img-desktop" alt="Gallery Image">
-            {% endfor %}
+            <!-- Left arrow -->
+            <button class="gallery-arrow gallery-arrow-left" id="galleryPrev">
+                <span>&larr;</span>
+            </button>
+
+            <div class="gallery-viewport">
+                <div class="gallery-track" id="galleryTrack">
+                    {% for img in gallery_images %}
+                        <div class="gallery-item">
+                            <img src="{{ img.image.url }}" class="gallery-img-desktop" alt="Gallery Image">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Right arrow -->
+            <button class="gallery-arrow gallery-arrow-right" id="galleryNext">
+                <span>&rarr;</span>
+            </button>
         </div>
     </div>
 
+    <!-- MOBILE: 1-image Bootstrap carousel (same as before) -->
     <div id="galleryCarousel" class="carousel slide d-md-none" data-bs-ride="carousel">
         <div class="carousel-inner">
             {% for img in gallery_images %}
@@ -174,28 +180,27 @@
             <span class="carousel-control-next-icon"></span>
         </button>
     </div>
-
 </div>
 
 
-    <section class="my-5">
-        <h2 class="text-center text-dark">Ask Our Experts</h2>
-        {% if user.is_authenticated and user.user_type == 'client' %}
+<section class="my-5">
+    <h2 class="text-center text-dark">Ask Our Experts</h2>
+    {% if user.is_authenticated and user.user_type == 'client' %}
         <form action="{% url 'ask_query' %}" method="post" class="text-center">
             {% csrf_token %}
-            <textarea name="question" class="form-control w-75 mx-auto mb-3" rows="3" placeholder="Type your legal question here..." required></textarea>
+            <textarea name="question" class="form-control w-75 mx-auto mb-3" rows="3"
+                      placeholder="Type your legal question here..." required></textarea>
             <button type="submit" class="btn custom-btn">Submit Question</button>
         </form>
-        {% else %}
-        <p class="text-center text-dark">Please <a href="{% url 'login' %}" class="text-primary">login</a> as client to ask a question.</p>
-        {% endif %}
-    </section>
-</div>
-
+    {% else %}
+        <p class="text-center text-dark">
+            Please <a href="{% url 'login' %}" class="text-primary">login</a> as client to ask a question.
+        </p>
+    {% endif %}
+</section>
 
 <section class="py-5 bg-light">
     <div class="container">
-        
         <div class="text-center mb-4">
             <h1 class="fw-bold text-dark" style="font-size: 32px;">
                 My Legal Consultants – Advocate Near Me
@@ -204,40 +209,40 @@
 
         <div class="col-lg-10 mx-auto">
             <p class="text-secondary" style="font-size: 16px; line-height: 1.7; text-align: justify;">
-                <strong>My Legal Consultants</strong> is your trusted digital platform for fast, 
-                reliable, and affordable legal services. Whether you need a 
-                <strong>civil lawyer</strong>, <strong>criminal lawyer</strong>, 
-                <strong>family court advocate</strong>, <strong>divorce lawyer</strong>, 
-                <strong>property dispute lawyer</strong>, or <strong>corporate legal consultant</strong>, 
+                <strong>My Legal Consultants</strong> is your trusted digital platform for fast,
+                reliable, and affordable legal services. Whether you need a
+                <strong>civil lawyer</strong>, <strong>criminal lawyer</strong>,
+                <strong>family court advocate</strong>, <strong>divorce lawyer</strong>,
+                <strong>property dispute lawyer</strong>, or <strong>corporate legal consultant</strong>,
                 we help you connect with the <strong>best verified advocates near you</strong> in just one click.
             </p>
 
             <p class="text-secondary" style="font-size: 16px; line-height: 1.7; text-align: justify;">
-                Our mission is to make legal help simple, accessible, and transparent for every individual. 
-                With a highly experienced team of advocates, we provide 
-                <strong>professional legal assistance</strong>, <strong>case guidance</strong>, 
+                Our mission is to make legal help simple, accessible, and transparent for every individual.
+                With a highly experienced team of advocates, we provide
+                <strong>professional legal assistance</strong>, <strong>case guidance</strong>,
                 and <strong>instant advocate booking</strong> for all types of legal matters across India.
             </p>
 
             <p class="text-secondary" style="font-size: 16px; line-height: 1.7; text-align: justify;">
-                From <strong>drafting legal documents</strong>, <strong>sending legal notices</strong>, 
-                <strong>bail matters</strong>, <strong>court representation</strong>, 
-                and <strong>consumer court cases</strong> to <strong>real-estate disputes</strong>, 
-                <strong>succession matters</strong>, and <strong>service law cases</strong>, 
+                From <strong>drafting legal documents</strong>, <strong>sending legal notices</strong>,
+                <strong>bail matters</strong>, <strong>court representation</strong>,
+                and <strong>consumer court cases</strong> to <strong>real-estate disputes</strong>,
+                <strong>succession matters</strong>, and <strong>service law cases</strong>,
                 My Legal Consultants ensures expert support tailored to your needs.
             </p>
 
             <p class="text-secondary" style="font-size: 16px; line-height: 1.7; text-align: justify;">
-                We offer unique features such as <strong>3 Free Advocate Replacements</strong>, 
-                emergency legal consultation, and real-time booking updates. With fair pricing, 
-                verified professionals, and complete confidentiality, we are one of the most reliable 
+                We offer unique features such as <strong>3 Free Advocate Replacements</strong>,
+                emergency legal consultation, and real-time booking updates. With fair pricing,
+                verified professionals, and complete confidentiality, we are one of the most reliable
                 platforms for <strong>legal services in India</strong>.
             </p>
 
             <p class="text-secondary" style="font-size: 16px; line-height: 1.7; text-align: justify;">
-                If you're searching for 
-                <em>“Advocate Near Me”, “Best Lawyers Near Me”, “Legal Consultation Online”, 
-                “Hire a Lawyer”, “Lawyer for Court Cases”</em>, 
+                If you're searching for
+                <em>“Advocate Near Me”, “Best Lawyers Near Me”, “Legal Consultation Online”,
+                “Hire a Lawyer”, “Lawyer for Court Cases”</em>,
                 My Legal Consultants is your one-stop trusted solution.
             </p>
         </div>

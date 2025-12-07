@@ -510,42 +510,93 @@ section.my-5 button:hover {
     }
 }
 
-
+/* ================================
+   GALLERY – DESKTOP 3-CARD SLIDER
+================================= */
 .gallery-desktop {
     width: 100%;
+    padding: 0 40px;                /* some side breathing room */
+    box-sizing: border-box;
+}
+
+.gallery-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.gallery-viewport {
     overflow: hidden;
+    width: 100%;
 }
 
-.gallery-scroll {
+.gallery-track {
     display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    gap: 12px;
-    padding: 0 15px;
+    transition: transform 0.4s ease;
 }
 
-.gallery-scroll::-webkit-scrollbar {
-    height: 6px;
-}
-.gallery-scroll::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 10px;
+/* Each item = 1/3 of viewport width */
+.gallery-item {
+    flex: 0 0 33.3333%;
+    padding: 0 10px;                /* gap between cards */
+    box-sizing: border-box;
 }
 
-
+/* Actual image card */
 .gallery-img-desktop {
-    width: calc(20% - 12px);
-    min-width: calc(20% - 12px);
-    height: 180px;
-    max-height: 180px;
-    object-fit: cover; 
-    border-radius: 10px;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    display: block;
 }
 
+/* Arrows */
+.gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: none;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.gallery-arrow span {
+    font-size: 18px;
+    line-height: 1;
+    color: #111827;
+}
+
+.gallery-arrow-left {
+    left: -10px;
+}
+
+.gallery-arrow-right {
+    right: -10px;
+}
+
+/* Disabled state */
+.gallery-arrow:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+/* ================================
+   MOBILE GALLERY (Bootstrap)
+================================= */
 .gallery-img-mobile {
     height: 220px;
+    width: 100%;
     object-fit: cover;
     border-radius: 10px;
 }
@@ -555,40 +606,12 @@ section.my-5 button:hover {
     filter: invert(1);
 }
 
-
-.all-services-page .card {
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 6px;
-    height: auto !important;
-    min-height: 130px !important;
-    text-align: center;
+/* Optional: tweak on very small screens */
+@media (max-width: 576px) {
+    .gallery-img-mobile {
+        height: 200px;
+    }
 }
-
-.service-img-container {
-    width: 45px !important;
-    height: 45px !important;
-    margin: 6px auto 4px auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.service-img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-}
-
-
-.card-title {
-    font-size: 0.9rem !important;
-    font-weight: 600;
-    margin: 4px 0 !important;
-    line-height: 1.1;
-    min-height: 28px !important;
-}
-
 
 .service-tile .card-body p {
     display: none !important;
@@ -860,4 +883,30 @@ section.my-5 button:hover {
         transform: translateX(-50%);
     }
 }
+
+.alert {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.urgent-btn {
+    background: linear-gradient(135deg, #ff1e1e, #b30000);
+    color: #fff !important;
+    padding: 14px 38px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: inline-block;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.35);
+    transition: 0.3s ease-in-out;
+    letter-spacing: 0.5px;
+}
+
+.urgent-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(255, 0, 0, 0.45);
+    background: linear-gradient(135deg, #ff3b3b, #cc0000);
+}
+
+
 

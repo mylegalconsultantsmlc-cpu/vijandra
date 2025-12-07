@@ -40,17 +40,18 @@ def home(request):
     services = Service.objects.exclude(title="Urgent Consultation")
     blogs = Blog.objects.all().order_by('-created_at')[:3]
 
-
-    gallery_images = HomeGallery.objects.all()[:5]
+    # IMPORTANT: Remove limit or loop will never run
+    gallery_images = HomeGallery.objects.all()
 
     context = {
         'featured_services': featured_services,
         'categories': categories,
         'services': services,
         'blogs': blogs,
-        'gallery_images': gallery_images, 
+        'gallery_images': gallery_images,
     }
     return render(request, 'core/home.html', context)
+
 
 
 def all_services(request):
@@ -514,15 +515,10 @@ def advocate_dashboard(request):
         "support_contact": "+91-8826669309",
     }
 
-
     response = render(request, 'core/dashboard_advocate.html', context)
     response['X-Robots-Tag'] = 'noindex, nofollow'
     return response
 
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def book_urgent_consultation(request):
